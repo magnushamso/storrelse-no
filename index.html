@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Størrelse.no – Størrelsesguide for sko og klær</title>
+  <meta name="description" content="Konverter skostørrelser mellom EU, UK, US, JP og mm. Størrelsesguide for herre, dame og barn." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&family=DM+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <a href="/" class="logo">størrelse<span class="logo-domene">.no</span></a>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+
+    <!-- Kjønnsvelger -->
+    <div class="kjonn-velger" role="group" aria-label="Velg kjønn">
+      <button class="kjonn-knapp aktiv" data-kjonn="herre">Herre</button>
+      <button class="kjonn-knapp" data-kjonn="dame">Dame</button>
+      <button class="kjonn-knapp" data-kjonn="barn">Barn</button>
+    </div>
+
+    <!-- Underkategori (kun barn) -->
+    <div class="underkategori-velger" id="underkategori-velger" style="display:none;" role="group" aria-label="Velg aldersgruppe">
+      <button class="underkategori-knapp aktiv" data-gruppe="spedbarn">Spedbarn</button>
+      <button class="underkategori-knapp" data-gruppe="smabarn">Småbarn</button>
+      <button class="underkategori-knapp" data-gruppe="junior">Junior</button>
+    </div>
+
+    <!-- Konverterer -->
+    <div class="konverter-boks">
+      <div class="konverter-rad">
+        <div class="konverter-felt">
+          <label for="system-velger">Jeg kjenner</label>
+          <select id="system-velger">
+            <option value="eu">EU-størrelse</option>
+            <option value="uk">UK-størrelse</option>
+            <option value="us">US-størrelse</option>
+            <option value="jp">JP (cm)</option>
+            <option value="mm">Fotlengde (mm)</option>
+          </select>
+        </div>
+        <div class="konverter-felt">
+          <label for="verdi-input">Størrelse</label>
+          <input type="number" id="verdi-input" placeholder="f.eks. 42" step="0.5" min="0" />
+        </div>
+      </div>
+
+      <!-- Resultat -->
+      <div class="resultat-grid" id="resultat-grid" style="display:none;">
+        <div class="resultat-kort" id="res-mm">
+          <div class="system">Fotlengde</div>
+          <div class="verdi" id="val-mm">–</div>
+          <div class="system">mm</div>
+        </div>
+        <div class="resultat-kort" id="res-eu">
+          <div class="system">EU</div>
+          <div class="verdi" id="val-eu">–</div>
+        </div>
+        <div class="resultat-kort" id="res-uk">
+          <div class="system">UK</div>
+          <div class="verdi" id="val-uk">–</div>
+        </div>
+        <div class="resultat-kort" id="res-us">
+          <div class="system">US</div>
+          <div class="verdi" id="val-us">–</div>
+        </div>
+        <div class="resultat-kort" id="res-jp">
+          <div class="system">JP</div>
+          <div class="verdi" id="val-jp">–</div>
+          <div class="system">cm</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full tabell -->
+    <div class="tabell-seksjon">
+      <h2 id="tabell-tittel">Herre skostørrelser</h2>
+      <div class="tabell-wrapper">
+        <table id="storrelse-tabell">
+          <thead>
+            <tr>
+              <th>Fotlengde (mm)</th>
+              <th>EU</th>
+              <th>UK</th>
+              <th>US</th>
+              <th id="jp-kolonne-header">JP (cm)</th>
+            </tr>
+          </thead>
+          <tbody id="tabell-kropp"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Merkenotater -->
+    <div class="merke-seksjon">
+      <h2>Merkenotater</h2>
+      <p style="color: var(--farge-tekst-dempet); font-size: 0.9rem; margin-bottom: 1rem;">
+        Noen merker avviker konsekvent fra standard størrelsesangivelse.
+      </p>
+      <div class="merke-liste" id="merke-liste"></div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      Størrelser er veiledende. Produsenter og modeller kan variere. Mål alltid foten for best resultat.
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
