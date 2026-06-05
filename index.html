@@ -5,41 +5,53 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Størrelse.no – Størrelsesguide for sko og klær</title>
   <meta name="description" content="Konverter skostørrelser mellom EU, UK, US, JP og mm. Størrelsesguide for herre, dame og barn." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Serif+Display&family=DM+Mono&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <header>
     <div class="container">
-      <a href="/" class="logo">størrelse<span class="logo-domene">.no</span></a>
+      <a href="/" class="logo" aria-label="Størrelse.no – forside">
+        STØRRELSE<span class="logo-domene">.NO</span>
+      </a>
     </div>
   </header>
 
   <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
 
-    <!-- Kjønnsvelger -->
-    <div class="kjonn-velger" role="group" aria-label="Velg kjønn">
-      <button class="kjonn-knapp aktiv" data-kjonn="herre">Herre</button>
-      <button class="kjonn-knapp" data-kjonn="dame">Dame</button>
-      <button class="kjonn-knapp" data-kjonn="barn">Barn</button>
+    <!-- Kjønnsvelger (WCAG 1.3.1, 4.1.3) -->
+    <div
+      class="kjonn-velger"
+      role="group"
+      aria-labelledby="kjonn-gruppe-label"
+    >
+      <span id="kjonn-gruppe-label" class="sr-only">Velg kjønn</span>
+      <button class="kjonn-knapp aktiv" data-kjonn="herre" aria-pressed="true">Herre</button>
+      <button class="kjonn-knapp" data-kjonn="dame" aria-pressed="false">Dame</button>
+      <button class="kjonn-knapp" data-kjonn="barn" aria-pressed="false">Barn</button>
     </div>
 
-    <!-- Underkategori (kun barn) -->
-    <div class="underkategori-velger" id="underkategori-velger" style="display:none;" role="group" aria-label="Velg aldersgruppe">
-      <button class="underkategori-knapp aktiv" data-gruppe="spedbarn">Spedbarn</button>
-      <button class="underkategori-knapp" data-gruppe="smabarn">Småbarn</button>
-      <button class="underkategori-knapp" data-gruppe="junior">Junior</button>
+    <!-- Underkategori barn -->
+    <div
+      class="underkategori-velger"
+      id="underkategori-velger"
+      role="group"
+      aria-labelledby="underkategori-label"
+      style="display:none;"
+    >
+      <span id="underkategori-label" class="sr-only">Velg aldersgruppe</span>
+      <button class="underkategori-knapp aktiv" data-gruppe="spedbarn" aria-pressed="true">Spedbarn</button>
+      <button class="underkategori-knapp" data-gruppe="smabarn" aria-pressed="false">Småbarn</button>
+      <button class="underkategori-knapp" data-gruppe="junior" aria-pressed="false">Junior</button>
     </div>
 
-    <!-- Konverterer -->
-    <div class="konverter-boks">
+    <!-- Konverter-boks -->
+    <div class="konverter-boks" role="search" aria-label="Størrelsekonvertering">
       <div class="konverter-rad">
+
         <div class="konverter-felt">
-          <label for="system-velger">Jeg kjenner</label>
-          <select id="system-velger">
+          <label for="system-velger">Kjent størrelse</label>
+          <select id="system-velger" aria-label="Velg størrelsessystem">
             <option value="eu">EU-størrelse</option>
             <option value="uk">UK-størrelse</option>
             <option value="us">US-størrelse</option>
@@ -47,66 +59,93 @@
             <option value="mm">Fotlengde (mm)</option>
           </select>
         </div>
+
         <div class="konverter-felt">
           <label for="verdi-input">Størrelse</label>
-          <input type="number" id="verdi-input" placeholder="f.eks. 42" step="0.5" min="0" />
+          <input
+            type="number"
+            id="verdi-input"
+            placeholder="f.eks. 42"
+            step="0.5"
+            min="0"
+            aria-describedby="konverter-hjelp"
+          />
         </div>
+
       </div>
 
-      <!-- Resultat -->
-      <div class="resultat-grid" id="resultat-grid" style="display:none;">
+      <p id="konverter-hjelp" class="sr-only">
+        Skriv inn en størrelse og velg system – alle andre størrelser beregnes automatisk.
+      </p>
+
+      <!-- Resultat (WCAG 4.1.3 – live region) -->
+      <div
+        class="resultat-grid"
+        id="resultat-grid"
+        role="region"
+        aria-live="polite"
+        aria-label="Konverterte størrelser"
+        style="display:none;"
+      >
         <div class="resultat-kort" id="res-mm">
-          <div class="system">Fotlengde</div>
-          <div class="verdi" id="val-mm">–</div>
-          <div class="system">mm</div>
+          <div class="system" aria-hidden="true">Fotlengde</div>
+          <div class="verdi" id="val-mm" aria-label="Fotlengde i millimeter">–</div>
+          <div class="system" aria-hidden="true">mm</div>
         </div>
         <div class="resultat-kort" id="res-eu">
-          <div class="system">EU</div>
-          <div class="verdi" id="val-eu">–</div>
+          <div class="system" aria-hidden="true">EU</div>
+          <div class="verdi" id="val-eu" aria-label="EU-størrelse">–</div>
         </div>
         <div class="resultat-kort" id="res-uk">
-          <div class="system">UK</div>
-          <div class="verdi" id="val-uk">–</div>
+          <div class="system" aria-hidden="true">UK</div>
+          <div class="verdi" id="val-uk" aria-label="UK-størrelse">–</div>
         </div>
         <div class="resultat-kort" id="res-us">
-          <div class="system">US</div>
-          <div class="verdi" id="val-us">–</div>
+          <div class="system" aria-hidden="true">US</div>
+          <div class="verdi" id="val-us" aria-label="US-størrelse">–</div>
         </div>
         <div class="resultat-kort" id="res-jp">
-          <div class="system">JP</div>
-          <div class="verdi" id="val-jp">–</div>
-          <div class="system">cm</div>
+          <div class="system" aria-hidden="true">JP</div>
+          <div class="verdi" id="val-jp" aria-label="Japansk størrelse i centimeter">–</div>
+          <div class="system" aria-hidden="true">cm</div>
         </div>
       </div>
     </div>
 
     <!-- Full tabell -->
-    <div class="tabell-seksjon">
-      <h2 id="tabell-tittel">Herre skostørrelser</h2>
+    <section class="tabell-seksjon" aria-labelledby="tabell-tittel">
+      <div class="seksjon-tittel">
+        <h2 id="tabell-tittel">Herre skostørrelser</h2>
+      </div>
       <div class="tabell-wrapper">
-        <table id="storrelse-tabell">
+        <table>
+          <caption class="sr-only" id="tabell-beskrivelse">
+            Konverteringstabell for skostørrelser
+          </caption>
           <thead>
             <tr>
-              <th>Fotlengde (mm)</th>
-              <th>EU</th>
-              <th>UK</th>
-              <th>US</th>
-              <th id="jp-kolonne-header">JP (cm)</th>
+              <th scope="col">Fotlengde (mm)</th>
+              <th scope="col">EU</th>
+              <th scope="col">UK</th>
+              <th scope="col">US</th>
+              <th scope="col" id="jp-kolonne-header">JP (cm)</th>
             </tr>
           </thead>
           <tbody id="tabell-kropp"></tbody>
         </table>
       </div>
-    </div>
+    </section>
 
     <!-- Merkenotater -->
-    <div class="merke-seksjon">
-      <h2>Merkenotater</h2>
-      <p style="color: var(--farge-tekst-dempet); font-size: 0.9rem; margin-bottom: 1rem;">
+    <section class="merke-seksjon" aria-labelledby="merke-tittel">
+      <div class="seksjon-tittel">
+        <h2 id="merke-tittel">Merkenotater</h2>
+      </div>
+      <p class="merke-beskrivelse">
         Noen merker avviker konsekvent fra standard størrelsesangivelse.
       </p>
-      <div class="merke-liste" id="merke-liste"></div>
-    </div>
+      <ul class="merke-liste" id="merke-liste" aria-label="Størrelsesnotater per merke"></ul>
+    </section>
 
   </main>
 
@@ -115,6 +154,19 @@
       Størrelser er veiledende. Produsenter og modeller kan variere. Mål alltid foten for best resultat.
     </div>
   </footer>
+
+  <!-- Skjult tekst for skjermlesere (WCAG 1.3.1) -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 
   <script src="data.js"></script>
   <script src="app.js"></script>

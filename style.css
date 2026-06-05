@@ -1,35 +1,55 @@
 /* =====================
-   CSS-variabler – endre disse for å redesigne hele siden
+   Movon – Zeppelin 32
+   ===================== */
+@font-face {
+  font-family: 'Zeppelin';
+  src: url('Zeppelin32.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =====================
+   CSS-variabler – Movon profil
    ===================== */
 :root {
-  --farge-bakgrunn:     #ffffff;
-  --farge-overflate:    #f7f6f3;
-  --farge-kant:         #e0ddd6;
-  --farge-tekst:        #1a1a18;
-  --farge-tekst-dempet: #6b6b65;
-  --farge-aksent:       #1a1a18;
-  --farge-aksent-lys:   #f0ede8;
-  --farge-highlight:    #e8f4e8;
+  /* Farger */
+  --lys-brun:     #b7a99a;
+  --mork-brun:    #3D3935;
+  --burgunder:    #861f41;
+  --gul:          #e1d555;
+  --gronn:        #73914e;
+  --bla:          #236192;
+  --hvit:         #ffffff;
+  --off-white:    #f5f3f0;
+  --kant:         #ddd8d1;
 
-  --font-hoved:   'DM Sans', sans-serif;
-  --font-display: 'DM Serif Display', serif;
-  --font-mono:    'DM Mono', monospace;
+  /* Semantiske tokens */
+  --farge-bakgrunn:     var(--hvit);
+  --farge-overflate:    var(--off-white);
+  --farge-kant:         var(--kant);
+  --farge-tekst:        var(--mork-brun);
+  --farge-tekst-dempet: #7a736a;
+  --farge-aksent:       var(--mork-brun);
+  --farge-aksent-lys:   #edeae6;
+  --farge-highlight:    #eef2e8;
+  --farge-focus:        var(--burgunder);
 
-  --radius-liten:  6px;
-  --radius-middels: 12px;
-  --radius-stor:   20px;
+  /* Typografi */
+  --font-hoved: 'Zeppelin', Arial, sans-serif;
 
-  --skygge: 0 2px 12px rgba(0,0,0,0.07);
-
-  --maks-bredde: 900px;
-  --mellomrom:   2rem;
+  /* Layout */
+  --radius-liten:   4px;
+  --radius-middels: 8px;
+  --radius-stor:    100px;
+  --skygge:         0 1px 4px rgba(61,57,53,0.08);
+  --maks-bredde:    880px;
 }
 
 /* =====================
    Reset & base
    ===================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
@@ -38,12 +58,17 @@ body {
   color: var(--farge-tekst);
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* =====================
-   Typografi
+   Focus (WCAG 2.4.7)
    ===================== */
-h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.2; }
+:focus-visible {
+  outline: 2px solid var(--farge-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-liten);
+}
 
 /* =====================
    Layout
@@ -59,29 +84,30 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 400; line-height: 1.
    ===================== */
 header {
   border-bottom: 1px solid var(--farge-kant);
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
 }
 
 header .container {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 1rem;
 }
 
 .logo {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-family: var(--font-hoved);
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
   color: var(--farge-tekst);
   text-decoration: none;
+  text-transform: uppercase;
 }
 
 .logo-domene {
   color: var(--farge-tekst-dempet);
-  font-size: 1rem;
 }
 
 /* =====================
-   Kjønn-velger (Herre / Dame / Barn)
+   Kjønn-velger
    ===================== */
 .kjonn-velger {
   display: flex;
@@ -95,25 +121,26 @@ header .container {
   border-radius: var(--radius-stor);
   background: transparent;
   font-family: var(--font-hoved);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: var(--farge-tekst-dempet);
   cursor: pointer;
   transition: all 0.15s ease;
+  letter-spacing: 0.02em;
 }
 
 .kjonn-knapp:hover {
-  border-color: var(--farge-aksent);
-  color: var(--farge-tekst);
+  border-color: var(--mork-brun);
+  color: var(--mork-brun);
 }
 
 .kjonn-knapp.aktiv {
-  background: var(--farge-aksent);
-  border-color: var(--farge-aksent);
-  color: #fff;
+  background: var(--mork-brun);
+  border-color: var(--mork-brun);
+  color: var(--hvit);
 }
 
 /* =====================
-   Underkategori-velger (Spedbarn / Småbarn / Junior)
+   Underkategori
    ===================== */
 .underkategori-velger {
   display: flex;
@@ -122,26 +149,26 @@ header .container {
 }
 
 .underkategori-knapp {
-  padding: 0.35rem 1rem;
+  padding: 0.35rem 0.9rem;
   border: 1px solid var(--farge-kant);
   border-radius: var(--radius-stor);
   background: transparent;
   font-family: var(--font-hoved);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--farge-tekst-dempet);
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .underkategori-knapp:hover {
-  border-color: var(--farge-aksent);
-  color: var(--farge-tekst);
+  border-color: var(--mork-brun);
+  color: var(--mork-brun);
 }
 
 .underkategori-knapp.aktiv {
   background: var(--farge-aksent-lys);
-  border-color: var(--farge-aksent);
-  color: var(--farge-tekst);
+  border-color: var(--mork-brun);
+  color: var(--mork-brun);
 }
 
 /* =====================
@@ -150,9 +177,20 @@ header .container {
 .konverter-boks {
   background: var(--farge-overflate);
   border: 1px solid var(--farge-kant);
-  border-radius: var(--radius-stor);
+  border-radius: var(--radius-middels);
   padding: 1.75rem;
   margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fartsstripe-dekor – Movon grafisk element */
+.konverter-boks::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--burgunder), var(--lys-brun), var(--gronn));
 }
 
 .konverter-rad {
@@ -167,47 +205,48 @@ header .container {
   flex-direction: column;
   gap: 0.4rem;
   flex: 1;
-  min-width: 120px;
+  min-width: 130px;
 }
 
+/* Label (WCAG 1.3.1, 2.4.6) */
 .konverter-felt label {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: var(--farge-tekst-dempet);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 .konverter-felt select,
-.konverter-felt input {
-  padding: 0.65rem 0.9rem;
+.konverter-felt input[type="number"] {
+  padding: 0.7rem 0.9rem;
   border: 1px solid var(--farge-kant);
   border-radius: var(--radius-middels);
-  background: var(--farge-bakgrunn);
+  background: var(--hvit);
   font-family: var(--font-hoved);
   font-size: 1rem;
   color: var(--farge-tekst);
   appearance: none;
   -webkit-appearance: none;
+  transition: border-color 0.15s;
 }
 
-.konverter-felt select:focus,
-.konverter-felt input:focus {
-  outline: 2px solid var(--farge-aksent);
-  outline-offset: 2px;
+.konverter-felt select:hover,
+.konverter-felt input[type="number"]:hover {
+  border-color: var(--mork-brun);
 }
 
 /* =====================
-   Resultat-kort
+   Resultat-grid
    ===================== */
 .resultat-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.75rem;
   margin-top: 1.25rem;
 }
 
 .resultat-kort {
-  background: var(--farge-bakgrunn);
+  background: var(--hvit);
   border: 1px solid var(--farge-kant);
   border-radius: var(--radius-middels);
   padding: 1rem;
@@ -216,32 +255,34 @@ header .container {
 
 .resultat-kort.highlight {
   background: var(--farge-highlight);
-  border-color: #b8ddb8;
+  border-color: var(--gronn);
 }
 
 .resultat-kort .system {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--farge-tekst-dempet);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.3rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
 }
 
 .resultat-kort .verdi {
-  font-family: var(--font-mono);
   font-size: 1.5rem;
   color: var(--farge-tekst);
+  letter-spacing: 0.02em;
 }
 
 /* =====================
-   Full tabell
+   Tabell
    ===================== */
 .tabell-seksjon {
   margin-bottom: 2.5rem;
 }
 
 .tabell-seksjon h2 {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: normal;
+  letter-spacing: 0.03em;
   margin-bottom: 1rem;
   color: var(--farge-tekst);
 }
@@ -255,7 +296,7 @@ header .container {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
 }
 
 thead tr {
@@ -265,10 +306,10 @@ thead tr {
 thead th {
   padding: 0.75rem 1rem;
   text-align: left;
-  font-weight: 500;
-  font-size: 0.75rem;
+  font-weight: normal;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   color: var(--farge-tekst-dempet);
   border-bottom: 1px solid var(--farge-kant);
 }
@@ -279,20 +320,18 @@ tbody tr {
 }
 
 tbody tr:last-child { border-bottom: none; }
-
 tbody tr:hover { background: var(--farge-aksent-lys); }
-
 tbody tr.aktiv-rad { background: var(--farge-highlight); }
 
 tbody td {
   padding: 0.65rem 1rem;
-  font-family: var(--font-mono);
   font-size: 0.88rem;
+  letter-spacing: 0.01em;
 }
 
 tbody td:first-child {
-  font-family: var(--font-hoved);
-  font-weight: 500;
+  color: var(--farge-tekst-dempet);
+  font-size: 0.8rem;
 }
 
 /* =====================
@@ -303,14 +342,22 @@ tbody td:first-child {
 }
 
 .merke-seksjon h2 {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: normal;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.merke-beskrivelse {
+  color: var(--farge-tekst-dempet);
+  font-size: 0.88rem;
   margin-bottom: 1rem;
 }
 
 .merke-liste {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .merke-rad {
@@ -324,14 +371,40 @@ tbody td:first-child {
 }
 
 .merke-navn {
-  font-weight: 500;
-  min-width: 160px;
+  font-size: 0.9rem;
+  min-width: 170px;
   flex-shrink: 0;
+  color: var(--farge-tekst);
 }
 
 .merke-notat {
   color: var(--farge-tekst-dempet);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
+}
+
+/* =====================
+   Seksjonstitler – border-bottom linje (Movon stil)
+   ===================== */
+.seksjon-tittel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.seksjon-tittel h2 {
+  font-size: 1rem;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.seksjon-tittel::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--farge-kant);
 }
 
 /* =====================
@@ -340,16 +413,25 @@ tbody td:first-child {
 footer {
   border-top: 1px solid var(--farge-kant);
   padding: 2rem 0;
-  margin-top: 3rem;
+  margin-top: 2rem;
   color: var(--farge-tekst-dempet);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
 }
 
 /* =====================
-   Mobil
+   Mobil (WCAG 1.4.4 – tekst skalerer)
    ===================== */
 @media (max-width: 600px) {
-  .konverter-rad { flex-direction: column; }
-  .kjonn-velger { flex-wrap: wrap; }
-  .resultat-grid { grid-template-columns: repeat(2, 1fr); }
+  .konverter-rad    { flex-direction: column; }
+  .kjonn-velger     { flex-wrap: wrap; }
+  .resultat-grid    { grid-template-columns: repeat(2, 1fr); }
+  .merke-rad        { flex-direction: column; gap: 0.25rem; }
+  .merke-navn       { min-width: unset; }
+}
+
+/* =====================
+   Redusert bevegelse (WCAG 2.3.3)
+   ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
 }

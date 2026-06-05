@@ -1,8 +1,8 @@
 /* =====================
    Tilstand
    ===================== */
-let aktivKjonn   = "herre";
-let aktivGruppe  = "spedbarn"; // kun for barn
+let aktivKjonn  = "herre";
+let aktivGruppe = "spedbarn";
 
 /* =====================
    Hjelpere
@@ -14,9 +14,7 @@ function formaterVerdi(v) {
 }
 
 function hentTabell() {
-  if (aktivKjonn === "barn") {
-    return SHOE_DATA.barn[aktivGruppe];
-  }
+  if (aktivKjonn === "barn") return SHOE_DATA.barn[aktivGruppe];
   return SHOE_DATA[aktivKjonn];
 }
 
@@ -28,12 +26,11 @@ function harJP() {
    Render tabell
    ===================== */
 function renderTabell(aktiveRad) {
-  const kropp   = document.getElementById("tabell-kropp");
-  const tittel  = document.getElementById("tabell-tittel");
-  const jpKol   = document.getElementById("jp-kolonne-header");
-  const tabell  = hentTabell();
+  const kropp  = document.getElementById("tabell-kropp");
+  const tittel = document.getElementById("tabell-tittel");
+  const jpKol  = document.getElementById("jp-kolonne-header");
+  const tabell = hentTabell();
 
-  // Tittel
   const tittelMap = {
     herre: "Herre skostørrelser",
     dame:  "Dame skostørrelser",
@@ -43,24 +40,26 @@ function renderTabell(aktiveRad) {
     ? tittelMap.barn[aktivGruppe]
     : tittelMap[aktivKjonn];
 
-  // JP-kolonne
   jpKol.style.display = harJP() ? "" : "none";
 
   kropp.innerHTML = "";
   tabell.forEach(rad => {
     const tr = document.createElement("tr");
-    if (aktiveRad && rad.mm === aktiveRad.mm) tr.classList.add("aktiv-rad");
+    if (aktiveRad && rad.mm === aktiveRad.mm) {
+      tr.classList.add("aktiv-rad");
+      tr.setAttribute("aria-current", "true");
+    }
 
-    const jp = harJP()
-      ? `<td style="display:${harJP() ? "" : "none"}">${formaterVerdi(rad.jp)}</td>`
-      : "";
+    const jpCell = harJP()
+      ? `<td>${formaterVerdi(rad.jp)}</td>`
+      : `<td style="display:none"></td>`;
 
     tr.innerHTML = `
       <td>${rad.mm}</td>
       <td>${formaterVerdi(rad.eu)}</td>
       <td>${formaterVerdi(rad.uk)}</td>
       <td>${formaterVerdi(rad.us)}</td>
-      ${jp}
+      ${jpCell}
     `;
     kropp.appendChild(tr);
   });
@@ -73,13 +72,13 @@ function renderMerker() {
   const liste = document.getElementById("merke-liste");
   liste.innerHTML = "";
   BRAND_NOTES.forEach(({ brand, note }) => {
-    const div = document.createElement("div");
-    div.className = "merke-rad";
-    div.innerHTML = `
+    const li = document.createElement("li");
+    li.className = "merke-rad";
+    li.innerHTML = `
       <span class="merke-navn">${brand}</span>
       <span class="merke-notat">${note}</span>
     `;
-    liste.appendChild(div);
+    liste.appendChild(li);
   });
 }
 
@@ -87,11 +86,15 @@ function renderMerker() {
    Konvertering
    ===================== */
 function oppdaterResultat() {
-  const system = document.getElementById("system-velger").value;
+  const system   = document.getElementById("system-velger").value;
   const raaVerdi = document.getElementById("verdi-input").value.trim();
-  const grid = document.getElementById("resultat-grid");
+  const grid     = document.getElementById("resultat-grid");
 
-  if (!raaVerdi) { grid.style.display = "none"; renderTabell(null); return; }
+  if (!raaVerdi) {
+    grid.style.display = "none";
+    renderTabell(null);
+    return;
+  }
 
   const verdi = parseFloat(raaVerdi.replace(",", "."));
   if (isNaN(verdi)) { grid.style.display = "none"; return; }
@@ -100,7 +103,6 @@ function oppdaterResultat() {
   const rad = finnNærmeste(tabell, system, verdi);
   if (!rad) return;
 
-  // Vis resultatgrid
   grid.style.display = "grid";
 
   document.getElementById("val-mm").textContent = rad.mm;
@@ -117,7 +119,6 @@ function oppdaterResultat() {
 
   renderTabell(rad);
 
-  // Scroll aktiv rad i sikte
   const aktiveRad = document.querySelector("#tabell-kropp .aktiv-rad");
   if (aktiveRad) aktiveRad.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
@@ -127,16 +128,19 @@ function oppdaterResultat() {
    ===================== */
 document.querySelectorAll(".kjonn-knapp").forEach(knapp => {
   knapp.addEventListener("click", () => {
-    document.querySelectorAll(".kjonn-knapp").forEach(k => k.classList.remove("aktiv"));
+    document.querySelectorAll(".kjonn-knapp").forEach(k => {
+      k.classList.remove("aktiv");
+      k.setAttribute("aria-pressed", "false");
+    });
     knapp.classList.add("aktiv");
+    knapp.setAttribute("aria-pressed", "true");
     aktivKjonn = knapp.dataset.kjonn;
 
     const barnVelger = document.getElementById("underkategori-velger");
     barnVelger.style.display = aktivKjonn === "barn" ? "flex" : "none";
 
-    // Skjul JP i select om barn
     const jpOption = document.querySelector("#system-velger option[value='jp']");
-    jpOption.style.display = aktivKjonn === "barn" ? "none" : "";
+    jpOption.disabled = aktivKjonn === "barn";
     if (aktivKjonn === "barn" && document.getElementById("system-velger").value === "jp") {
       document.getElementById("system-velger").value = "eu";
     }
@@ -148,12 +152,16 @@ document.querySelectorAll(".kjonn-knapp").forEach(knapp => {
 });
 
 /* =====================
-   Underkategori (barn)
+   Underkategori
    ===================== */
 document.querySelectorAll(".underkategori-knapp").forEach(knapp => {
   knapp.addEventListener("click", () => {
-    document.querySelectorAll(".underkategori-knapp").forEach(k => k.classList.remove("aktiv"));
+    document.querySelectorAll(".underkategori-knapp").forEach(k => {
+      k.classList.remove("aktiv");
+      k.setAttribute("aria-pressed", "false");
+    });
     knapp.classList.add("aktiv");
+    knapp.setAttribute("aria-pressed", "true");
     aktivGruppe = knapp.dataset.gruppe;
     document.getElementById("verdi-input").value = "";
     document.getElementById("resultat-grid").style.display = "none";
@@ -162,7 +170,7 @@ document.querySelectorAll(".underkategori-knapp").forEach(knapp => {
 });
 
 /* =====================
-   Input-lytter
+   Input
    ===================== */
 document.getElementById("verdi-input").addEventListener("input", oppdaterResultat);
 document.getElementById("system-velger").addEventListener("change", oppdaterResultat);
